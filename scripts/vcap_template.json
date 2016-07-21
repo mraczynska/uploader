@@ -1,0 +1,30 @@
+{
+  "user-provided": [
+   {
+    "credentials": {
+     "kcacert": "",
+     "kdc": "",
+     "kpassword": "",
+     "krealm": "",
+     "kuser": "cf"
+    },
+    "label": "user-provided",
+    "name": "kerberos-service",
+    "syslog_drain_url": "",
+    "tags": []
+   }
+  ],
+  "hdfs": [
+    {
+      "tags": [],
+      "plan": "multitenant",
+      "name": "hdfs-instance",
+      "label": "hdfs",
+      "credentials": {
+        "uri": "$HDFS_URI",
+        "fs.defaultFS": "$DEFAULT_FS",
+        "HADOOP_CONFIG_KEY": $HADOOP_CONFIG_JSON
+      }
+    }
+  ]
+}

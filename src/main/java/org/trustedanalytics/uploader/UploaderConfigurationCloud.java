@@ -41,7 +41,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Configuration
-@Profile("cloud")
+@Profile({"cloud", "kube"})
 public class UploaderConfigurationCloud {
 
     @Value("${services.dataacquisition.url}")
