@@ -5,7 +5,7 @@ spring.oauth2:
   resource:
     id: cloud_controller
     jwt:
-      keyUri: ${vcap.services.sso.credentials.tokenKey}
+      keyUri: ${sso.tokenKey}
 
 logging:
   level:
@@ -13,8 +13,8 @@ logging:
     org.trustedanalytics.uploader: DEBUG
 
 cf:
-  resource: ${vcap.services.sso.credentials.apiEndpoint}
-  uaa: ${vcap.services.sso.credentials.uaaUri}
+  resource: ${sso.apiEndpoint}
+  uaa: ${sso.uaaUri}
 
 services:
   dataacquisition.url: ${data.acquisition.uri:http://localhost:9997}
@@ -22,3 +22,12 @@ services:
 
 endpoints.enabled: false
 endpoints.health.enabled: true
+
+hdfs:
+  configDir: /etc/hadoop/
+  uri: "hdfs://nameservice1/tmp/%{organization}/brokers/userspace/efeedfce-05f5-4600-95f8-efd1f6c480f4/"
+kerberos:
+  kdc: kdc.host.addr
+  realm: KDC_REALM_NAME
+  user: cf
+  pass: haselko

@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.trustedanalytics</groupId>
             <artifactId>object-store</artifactId>
-            <version>0.4.16</version>
+            <version>0.4.18</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
@@ -90,6 +90,12 @@
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -162,31 +168,19 @@
             <artifactId>docker-maven-plugin</artifactId>
             <configuration>
               <imageName>${docker.imageName}</imageName>
-              <baseImage>tapimages.us.enableiot.com:8080/tap-base-java:java8-jessie</baseImage>
-              <cmd>["/scripts/run.sh", "/${project.build.finalName}.jar"]</cmd>
+              <baseImage>${docker.registry}/tap-base-java:java8-jessie</baseImage>
+              <cmd>java $JAVA_OPTS -jar /${project.build.finalName}.jar</cmd>
               <resources>
                  <resource>
                    <targetPath>/</targetPath>
                    <directory>${project.build.directory}</directory>
                    <include>${project.build.finalName}.jar</include>
                  </resource>
-                 <resource>
-                   <targetPath>/scripts</targetPath>
-                   <directory>${project.basedir}/scripts</directory>
-                 </resource>
               </resources>
               <env>
                 <PORT>80</PORT>
                 <JAVA_OPTS>-Xmx500m</JAVA_OPTS>
               </env>
-              <runs>
-                <run>apt-get update</run>
-                <run>apt-get -y install jq xalan gettext-base</run>
-                <run>apt-get clean autoclean</run>
-                <run>apt-get autoremove -y</run>
-                <run>chmod 744 /scripts/*.sh</run>
-              </runs>
-              <squashRunCommands>true</squashRunCommands>
             </configuration>
           </plugin>
         </plugins>
@@ -197,5 +191,6 @@
         <jacoco-measurement-lines>0.224</jacoco-measurement-lines>                  <!-- Value <0.000, 1.000>, at least 3 places after coma -->
         <jacoco-measurement-classes>0.300</jacoco-measurement-classes>              <!-- Value <0.000, 1.000>, at least 3 places after coma -->
         <docker.imageName>${project.artifactId}</docker.imageName>
+        <docker.registry>tapimages.us.enableiot.com:8080</docker.registry>
     </properties>
 </project>
