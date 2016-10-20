@@ -3,7 +3,7 @@ security:
 
 spring.oauth2:
   resource:
-    id: cloud_controller
+    id: tap
     jwt:
       keyUri: ${sso.tokenKey}
 
@@ -17,7 +17,7 @@ cf:
   uaa: ${sso.uaaUri}
 
 services:
-  dataacquisition.url: ${data.acquisition.uri:http://localhost:9997}
+  dataacquisition.url: "${data.acquisition.uri:http://localhost:9997}"
   user-management.url: ${user.management.uri:http://localhost:9998}
 
 endpoints.enabled: false

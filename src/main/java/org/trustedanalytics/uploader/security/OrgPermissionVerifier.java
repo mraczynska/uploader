@@ -41,7 +41,7 @@ public class OrgPermissionVerifier implements PermissionVerifier {
     public void checkOrganizationAccess(UUID org, Authentication auth) {
         userManagementClient.getPermissions("bearer " + tokenExtractor.apply(auth))
             .stream()
-            .map(ccOrgPermission -> ccOrgPermission.getOrganization().getMetadata().getGuid())
+            .map(orgPermission -> orgPermission.getOrg().getGuid())
             .filter(org::equals)
             .findFirst()
             .orElseThrow(() -> new AccessDeniedException(ACCESS_DENIED_MSG));

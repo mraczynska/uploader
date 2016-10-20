@@ -15,16 +15,17 @@
  */
 package org.trustedanalytics.uploader.client;
 
+import java.util.List;
+
+import org.trustedanalytics.usermanagement.security.model.OrgPermission;
+
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
-import org.trustedanalytics.cloud.cc.api.CcOrgPermission;
-
-import java.util.List;
 
 public interface UserManagementClient {
 
     @RequestLine("GET /rest/orgs/permissions")
     @Headers({"Authorization: {token}", "Content-Type: application/json"})
-    List<CcOrgPermission> getPermissions(@Param("token") String token);
+    List<OrgPermission> getPermissions(@Param("token") String token);
 }

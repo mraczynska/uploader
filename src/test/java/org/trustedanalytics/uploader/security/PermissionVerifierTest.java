@@ -21,11 +21,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.trustedanalytics.cloud.cc.api.CcOrg;
-import org.trustedanalytics.cloud.cc.api.CcOrgPermission;
-import org.trustedanalytics.uploader.client.UserManagementClient;
-
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,10 +33,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.trustedanalytics.uploader.client.UserManagementClient;
+import org.trustedanalytics.usermanagement.orgs.model.Org;
+import org.trustedanalytics.usermanagement.security.model.OrgPermission;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import com.google.common.collect.ImmutableList;
 
 @RunWith(Parameterized.class)
 public class PermissionVerifierTest {
@@ -123,7 +122,7 @@ public class PermissionVerifierTest {
         verifyNoMoreInteractions(umClient);
     }
 
-    private static UserManagementClient mockUserManagement(CcOrgPermission... permissions) {
+    private static UserManagementClient mockUserManagement(OrgPermission... permissions) {
         final UserManagementClient umClient = mock(UserManagementClient.class);
         if(permissions == null) {
             when(umClient.getPermissions(anyString())).thenReturn(ImmutableList.of());
@@ -133,12 +132,12 @@ public class PermissionVerifierTest {
         return umClient;
     }
 
-    private static CcOrgPermission allOrgRoles(UUID guid) {
-        return new CcOrgPermission(new CcOrg(guid, guid.toString()), true, true, true);
+    private static OrgPermission allOrgRoles(UUID guid) {
+        return new OrgPermission(new Org(guid, guid.toString()), true, true);
     }
 
-    private static CcOrgPermission noOrgRoles(UUID guid) {
-        return new CcOrgPermission(new CcOrg(guid, guid.toString()), false, false, false);
+    private static OrgPermission noOrgRoles(UUID guid) {
+        return new OrgPermission(new Org(guid, guid.toString()), false, false);
     }
 
 }
