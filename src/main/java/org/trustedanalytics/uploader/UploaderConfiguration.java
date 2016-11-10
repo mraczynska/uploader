@@ -15,21 +15,19 @@
  */
 package org.trustedanalytics.uploader;
 
-import org.trustedanalytics.store.ObjectStoreConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.trustedanalytics.store.EnableObjectStore;
 import org.trustedanalytics.uploader.core.stream.decoder.GzipStreamDecoder;
 import org.trustedanalytics.uploader.core.stream.decoder.ZipStreamDecoder;
 import org.trustedanalytics.uploader.security.OAuth2TokenExtractor;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.core.Authentication;
 
 import java.io.InputStream;
 import java.util.function.Function;
 
 @Configuration
-@Import(ObjectStoreConfiguration.class)
+@EnableObjectStore
 public class UploaderConfiguration {
 
     @Bean
