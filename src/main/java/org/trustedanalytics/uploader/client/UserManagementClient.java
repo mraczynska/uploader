@@ -17,11 +17,10 @@ package org.trustedanalytics.uploader.client;
 
 import java.util.List;
 
-import org.trustedanalytics.usermanagement.security.model.OrgPermission;
-
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
+import org.trustedanalytics.uploader.client.model.OrgPermission;
 
 public interface UserManagementClient {
 

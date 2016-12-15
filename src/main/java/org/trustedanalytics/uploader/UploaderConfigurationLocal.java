@@ -33,7 +33,6 @@ import org.springframework.context.annotation.Profile;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 @Configuration
 @Profile("local")
@@ -43,7 +42,7 @@ public class UploaderConfigurationLocal {
     private static final Logger LOGGER = LoggerFactory.getLogger(UploaderConfiguration.class);
 
     @Bean
-    public TriConsumer<InputStream, Transfer, UUID> streamConsumer(
+    public TriConsumer<InputStream, Transfer, String> streamConsumer(
             InFolderObjectStore store) {
         return new ObjectStoreStreamConsumer(x -> store);
     }

@@ -37,7 +37,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 
 import java.io.InputStream;
-import java.util.UUID;
 import java.util.function.Function;
 
 @Configuration
@@ -51,8 +50,8 @@ public class UploaderConfigurationCloud {
     private String userManagementUrl;
 
     @Bean
-    public TriConsumer<InputStream, Transfer, UUID> streamConsumer(
-            ObjectStoreFactory<UUID> store) {
+    public TriConsumer<InputStream, Transfer, String> streamConsumer(
+            ObjectStoreFactory<String> store) {
         return new ObjectStoreStreamConsumer(store);
     }
 

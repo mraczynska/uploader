@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 
 import javax.security.auth.login.LoginException;
@@ -56,7 +55,7 @@ public class UploadService {
 
     private final Function<InputStream, InputStream> streamDecoder;
 
-    private final TriConsumer<InputStream, Transfer, UUID> streamConsumer;
+    private final TriConsumer<InputStream, Transfer, String> streamConsumer;
 
     private DataAcquisitionClient dataAcquisitionClient;
 
@@ -64,7 +63,7 @@ public class UploadService {
 
     @Autowired
     public UploadService(Function<InputStream, InputStream> streamDecoder,
-                         TriConsumer<InputStream, Transfer, UUID> streamConsumer, DataAcquisitionClient client,
+                         TriConsumer<InputStream, Transfer, String> streamConsumer, DataAcquisitionClient client,
                          Function<Authentication, String> tokenExtractor) {
         this.streamDecoder = streamDecoder;
         this.streamConsumer = streamConsumer;
@@ -100,7 +99,7 @@ public class UploadService {
         try (InputStream input = streamDecoder.apply(fileItemStream.openStream())) {
             final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Transfer transfer = new Transfer(uploadMetadata);
-            streamConsumer.accept(input, transfer, UUID.fromString(uploadMetadata.getOrgUUID()));
+            streamConsumer.accept(input, transfer, uploadMetadata.getOrgId());
             transfer = mapper.apply(transfer);
             dataAcquisitionClient.uploadCompleted(transfer, "bearer " + tokenExtractor.apply(auth));
             transfers.add(transfer);

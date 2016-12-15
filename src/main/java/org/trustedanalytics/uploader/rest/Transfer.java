@@ -26,7 +26,7 @@ public class Transfer {
     @JsonProperty("source")
     private String source;
     @JsonProperty("orgUUID")
-    private String orgUUID;
+    private String orgId;
     @JsonProperty("title")
     private String title;
     @JsonProperty("category")
@@ -42,7 +42,7 @@ public class Transfer {
 
     public Transfer(UploadMetadata metadata) {
         this.source = Objects.requireNonNull(metadata.getSource(), "source is required");
-        this.orgUUID = Objects.requireNonNull(metadata.getOrgUUID(), "orgUUID is required");
+        this.orgId = Objects.requireNonNull(metadata.getOrgId(), "orgId is required");
         this.title = Objects.requireNonNull(metadata.getTitle(), "title is required");
         this.category = Objects.requireNonNull(metadata.getCategory(), "category is required");
         this.publicAccess = Objects.requireNonNull(metadata.getPublicAccess(), "publicAccess is required");
@@ -50,7 +50,7 @@ public class Transfer {
 
     public Transfer(Transfer transfer) {
         this.source = Objects.requireNonNull(transfer.getSource(), "source is required");
-        this.orgUUID = Objects.requireNonNull(transfer.getOrgUUID(), "orgUUID is required");
+        this.orgId = Objects.requireNonNull(transfer.getOrgId(), "orgId is required");
         this.title = Objects.requireNonNull(transfer.getTitle(), "title is required");
         this.category = Objects.requireNonNull(transfer.getCategory(), "category is required");
         this.publicAccess = Objects.requireNonNull(transfer.isPublicAccess(), "publicAccess is required");

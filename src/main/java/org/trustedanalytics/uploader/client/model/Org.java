@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.uploader.rest;
+package org.trustedanalytics.uploader.client.model;
 
-import org.trustedanalytics.uploader.core.listener.FileUploadListener;
-
-import java.util.Objects;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class UploadRequest {
+@AllArgsConstructor
+public class Org {
 
-    private String org;
-    private FileUploadListener listener;
+    @JsonProperty("guid")
+    private String id;
 
-    public UploadRequest(String org, FileUploadListener listener) {
-        this.org = Objects.requireNonNull(org);
-        this.listener = Objects.requireNonNull(listener);
+    private String name;
+
+    public Org() {
     }
 }

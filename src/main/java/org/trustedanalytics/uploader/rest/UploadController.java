@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,14 +72,14 @@ public class UploadController {
             @ApiResponse(code = 403, message = "User is not permitted to perform the requested operation"),
             @ApiResponse(code = 500, message = "Service encountered an unexpected condition which prevented it from fulfilling the request")
     })
-    @RequestMapping(value = "/rest/upload/{orgGuid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/upload/{orgId}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Transfer uploadFile(HttpServletRequest request, @PathVariable("orgGuid") UUID orgGuid)
+    public Transfer uploadFile(HttpServletRequest request, @PathVariable("orgId") String orgId)
             throws IOException, FileUploadException {
 
         final ServletFileUpload upload = new ServletFileUpload();
-        final UploadRequest uploadRequest = toUploadRequest(request, orgGuid, upload);
+        final UploadRequest uploadRequest = toUploadRequest(request, orgId, upload);
         return uploadService.processUpload(upload.getItemIterator(request), uploadRequest, false).get(0);
     }
 
@@ -95,26 +94,26 @@ public class UploadController {
             @ApiResponse(code = 403, message = "User is not permitted to perform the requested operation"),
             @ApiResponse(code = 500, message = "Service encountered an unexpected condition which prevented it from fulfilling the request")
     })
-    @RequestMapping(value = "/rest/v1/files/{orgGuid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/v1/files/{orgId}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Collection<Transfer> uploadFiles(HttpServletRequest request, @PathVariable("orgGuid") UUID orgGuid)
+    public Collection<Transfer> uploadFiles(HttpServletRequest request, @PathVariable("orgId") String orgId)
             throws IOException, FileUploadException {
 
         final ServletFileUpload upload = new ServletFileUpload();
-        final UploadRequest uploadRequest = toUploadRequest(request, orgGuid, upload);
+        final UploadRequest uploadRequest = toUploadRequest(request, orgId, upload);
         return uploadService.processUpload(upload.getItemIterator(request), uploadRequest, true);
     }
 
 
-    private UploadRequest toUploadRequest(HttpServletRequest request, UUID orgGuid, ServletFileUpload upload) {
+    private UploadRequest toUploadRequest(HttpServletRequest request, String orgId, ServletFileUpload upload) {
         checkArgument(ServletFileUpload.isMultipartContent(request), "No multipart content");
 
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        permissionVerifier.checkOrganizationAccess(orgGuid, auth);
+        permissionVerifier.checkOrganizationAccess(orgId, auth);
 
         final FileUploadListener listener = new FileUploadListener();
         upload.setProgressListener(listener);
-        return new UploadRequest(orgGuid, listener);
+        return new UploadRequest(orgId, listener);
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 
-import java.util.UUID;
 import java.util.function.Function;
 
 public class OrgPermissionVerifier implements PermissionVerifier {
@@ -38,10 +37,10 @@ public class OrgPermissionVerifier implements PermissionVerifier {
     }
 
     @Override
-    public void checkOrganizationAccess(UUID org, Authentication auth) {
+    public void checkOrganizationAccess(String org, Authentication auth) {
         userManagementClient.getPermissions("bearer " + tokenExtractor.apply(auth))
             .stream()
-            .map(orgPermission -> orgPermission.getOrg().getGuid())
+            .map(orgPermission -> orgPermission.getOrg().getId())
             .filter(org::equals)
             .findFirst()
             .orElseThrow(() -> new AccessDeniedException(ACCESS_DENIED_MSG));

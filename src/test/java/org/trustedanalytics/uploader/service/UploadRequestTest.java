@@ -38,26 +38,26 @@ public class UploadRequestTest {
         return Arrays.asList(
                 new Object[][]{
                         {"test without category specified", UploadMetadata.builder()
-                                .setOrgUUID(UUID.randomUUID().toString())
+                                .setOrgId(UUID.randomUUID().toString())
                                 .setPublicAccess(true)
                                 .setSource("source")
                                 .setTitle("title"), containsString("other")},
 
                         {"test with category specified", UploadMetadata.builder()
-                                .setOrgUUID(UUID.randomUUID().toString())
+                                .setOrgId(UUID.randomUUID().toString())
                                 .setCategory("finance")
                                 .setPublicAccess(true)
                                 .setSource("source")
                                 .setTitle("title"), containsString("finance")},
 
                         {"test without public access specified", UploadMetadata.builder()
-                                .setOrgUUID(UUID.randomUUID().toString())
+                                .setOrgId(UUID.randomUUID().toString())
                                 .setCategory("finance")
                                 .setSource("source")
                                 .setTitle("title"), containsString("false")},
 
                         {"test with public access specified", UploadMetadata.builder()
-                                .setOrgUUID(UUID.randomUUID().toString())
+                                .setOrgId(UUID.randomUUID().toString())
                                 .setPublicAccess(true)
                                 .setCategory("finance")
                                 .setSource("source")

@@ -24,23 +24,22 @@ import org.trustedanalytics.uploader.rest.Transfer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.security.auth.login.LoginException;
 
 
-public class ObjectStoreStreamConsumer implements TriConsumer<InputStream, Transfer, UUID> {
+public class ObjectStoreStreamConsumer implements TriConsumer<InputStream, Transfer, String> {
 
-    private final ObjectStoreFactory<UUID> objectStoreFactory;
+    private final ObjectStoreFactory<String> objectStoreFactory;
 
-    public ObjectStoreStreamConsumer(ObjectStoreFactory<UUID> objectStoreFactory) {
+    public ObjectStoreStreamConsumer(ObjectStoreFactory<String> objectStoreFactory) {
         this.objectStoreFactory = Objects.requireNonNull(objectStoreFactory);
     }
 
     @Override
-    public void accept(InputStream inputStream, Transfer transfer, UUID orgUUID)
+    public void accept(InputStream inputStream, Transfer transfer, String orgId)
             throws IOException, LoginException, InterruptedException {
-        ObjectStore objectStore = objectStoreFactory.create(orgUUID);
+        ObjectStore objectStore = objectStoreFactory.create(orgId);
         try {
             transfer.setObjectStoreId(objectStore.getId());
             transfer.setSavedObjectId(objectStore.save(inputStream));

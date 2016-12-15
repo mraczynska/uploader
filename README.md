@@ -30,7 +30,7 @@ After open it in web browser, choose files from disk. Form in multiple_files_upl
 
 * Upload single file
 
-  Path: `/rest/upload/{orgGuid}`
+  Path: `/rest/upload/{orgId}`
 
 Example response:
 ```
@@ -40,13 +40,13 @@ Example response:
     "publicAccess": false,
     "category": "business",
     "title": "upload-data",
-    "orgUUID": "31e3c350-e937-4c59-ae15-25ddf227babd",
+    "orgId": "31e3c350-e937-4c59-ae15-25ddf227babd",
     "source": "test1.txt"
 }
 ```
 * Upload multiple files
 
-  Path: `/rest/v1/files/{orgGuid}`
+  Path: `/rest/v1/files/{orgId}`
 
 Example response:
 ```
@@ -57,7 +57,7 @@ Example response:
     "publicAccess": false,
     "category": "business",
     "title": "test1",
-    "orgUUID": "31e3c350-e937-4c59-ae15-25ddf227babd",
+    "orgId": "31e3c350-e937-4c59-ae15-25ddf227babd",
     "source": "test1.txt"
   },
   {
@@ -66,7 +66,7 @@ Example response:
     "publicAccess": false,
     "category": "business",
     "title": "test2",
-    "orgUUID": "31e3c350-e937-4c59-ae15-25ddf227babd",
+    "orgId": "31e3c350-e937-4c59-ae15-25ddf227babd",
     "source": "test2.txt"
   },
   {
@@ -75,7 +75,7 @@ Example response:
     "publicAccess": false,
     "category": "business",
     "title": "test",
-    "orgUUID": "31e3c350-e937-4c59-ae15-25ddf227babd",
+    "orgId": "31e3c350-e937-4c59-ae15-25ddf227babd",
     "source": "test.txt"
   }
 ]
@@ -115,10 +115,10 @@ If you change port while starting application, you should run script with additi
 
 * upload single file
 ```
-curl -H "Authorization: `cf oauth-token | grep bearer`" -v -F orgUUID=<org guid> -F category=<category> -F title=<title> -F upload=@<path to file> http://localhost:8080/rest/upload/<org guid>
+curl -H "Authorization: `cf oauth-token | grep bearer`" -v -F orgId=<org id> -F category=<category> -F title=<title> -F upload=@<path to file> http://localhost:8080/rest/upload/<org guid>
 ```
 * upload multiple files
 ```
-curl -H "Authorization: `cf oauth-token | grep bearer`" -v -F orgUUID=<org guid> -F category=<category> -F title=<title> -F upload=@<path to file> http://localhost:8080/rest/v1/files/<org guid>
+curl -H "Authorization: `cf oauth-token | grep bearer`" -v -F orgId=<org id> -F category=<category> -F title=<title> -F upload=@<path to file> http://localhost:8080/rest/v1/files/<org guid>
 ```
 You can add as many `-F upload=@<file>` as you want if you upload multiple files. You can put path to file which you want upload or filename from current directory.

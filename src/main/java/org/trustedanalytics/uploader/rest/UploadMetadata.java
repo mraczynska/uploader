@@ -29,7 +29,7 @@ public class UploadMetadata {
     @JsonProperty("source")
     private final String source;
     @JsonProperty("orgUUID")
-    private final String orgUUID;
+    private final String orgId;
     @JsonProperty("title")
     private final String title;
     @JsonProperty("category")
@@ -39,7 +39,7 @@ public class UploadMetadata {
 
     private UploadMetadata(UploadMetadataBuilder builder) {
         this.source = Objects.requireNonNull(builder.source, "source is required");
-        this.orgUUID = Objects.requireNonNull(builder.orgUUID, "organization guid is required");
+        this.orgId = Objects.requireNonNull(builder.orgId, "organization id is required");
         this.title = Objects.requireNonNull(builder.title, "title is required");
         this.category = Objects.requireNonNull(builder.category, "category is required");
         this.publicAccess = builder.publicAccess;
@@ -49,8 +49,8 @@ public class UploadMetadata {
         return source;
     }
 
-    public String getOrgUUID() {
-        return orgUUID;
+    public String getOrgId() {
+        return orgId;
     }
 
     public String getTitle() {
@@ -69,7 +69,7 @@ public class UploadMetadata {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("source", source)
-                .add("orgUUID", orgUUID)
+                .add("orgId", orgId)
                 .add("title", title)
                 .add("category", category)
                 .add("publicAccess", publicAccess)
@@ -83,7 +83,7 @@ public class UploadMetadata {
     public static class UploadMetadataBuilder {
 
         private String source;
-        private String orgUUID;
+        private String orgId;
         private String title;
         private String category = "other";
         private boolean publicAccess = false;
@@ -93,8 +93,8 @@ public class UploadMetadata {
             return this;
         }
 
-        public UploadMetadataBuilder setOrgUUID(String orgUUID) {
-            this.orgUUID = orgUUID;
+        public UploadMetadataBuilder setOrgId(String orgId) {
+            this.orgId = orgId;
             return this;
         }
 
@@ -122,7 +122,7 @@ public class UploadMetadata {
                 case "publicrequest":
                     return setPublicAccess(Boolean.valueOf(value));
                 case "orguuid":
-                    return setOrgUUID(value);
+                    return setOrgId(value);
                 default:
                     LOGGER.warn("{} : {} is not known", key, value);
                     return this;

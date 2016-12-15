@@ -34,17 +34,18 @@ import org.junit.runners.Parameterized;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.trustedanalytics.uploader.client.UserManagementClient;
-import org.trustedanalytics.usermanagement.orgs.model.Org;
-import org.trustedanalytics.usermanagement.security.model.OrgPermission;
 
 import com.google.common.collect.ImmutableList;
+import org.trustedanalytics.uploader.client.model.Org;
+import org.trustedanalytics.uploader.client.model.OrgPermission;
 
 @RunWith(Parameterized.class)
 public class PermissionVerifierTest {
 
-    private static final UUID deniedOrg = UUID.randomUUID();
-    private static final UUID grantedOrg = UUID.randomUUID();
-    private static final UUID otherGrantedOrg = UUID.randomUUID();
+    private static final String deniedOrg = UUID.randomUUID().toString();
+    private static final String grantedOrg = UUID.randomUUID().toString();
+    private static final String otherGrantedOrg = UUID.randomUUID().toString();
+    private static final String DEFAULT_ORG_NAME = "default";
 
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
@@ -53,17 +54,17 @@ public class PermissionVerifierTest {
             new Object[][] {
                 {"User assigned to organization with all roles",
                     grantedOrg,
-                    mockUserManagement(allOrgRoles(grantedOrg)),
+                    mockUserManagement(allOrgRoles(grantedOrg, DEFAULT_ORG_NAME)),
                     null
                 },
                 {"User assigned to organization with no roles",
                     grantedOrg,
-                    mockUserManagement(noOrgRoles(grantedOrg)),
+                    mockUserManagement(noOrgRoles(grantedOrg, DEFAULT_ORG_NAME)),
                     null
                 },
                 {"User assigned to requested and other organizations",
                     grantedOrg,
-                    mockUserManagement(allOrgRoles(grantedOrg), allOrgRoles(otherGrantedOrg)),
+                    mockUserManagement(allOrgRoles(grantedOrg, DEFAULT_ORG_NAME), allOrgRoles(otherGrantedOrg, DEFAULT_ORG_NAME)),
                     null
                 },
                 {"User not assigned to any organization",
@@ -73,12 +74,12 @@ public class PermissionVerifierTest {
                 },
                 {"User not assigned to requested organization",
                     deniedOrg,
-                    mockUserManagement(allOrgRoles(grantedOrg)),
+                    mockUserManagement(allOrgRoles(grantedOrg, DEFAULT_ORG_NAME)),
                     new AccessDeniedException(OrgPermissionVerifier.ACCESS_DENIED_MSG)
                 },
                 {"User assigned to multiple other organizations",
                     deniedOrg,
-                    mockUserManagement(allOrgRoles(grantedOrg), allOrgRoles(otherGrantedOrg)),
+                    mockUserManagement(allOrgRoles(grantedOrg, DEFAULT_ORG_NAME), allOrgRoles(otherGrantedOrg, DEFAULT_ORG_NAME)),
                     new AccessDeniedException(OrgPermissionVerifier.ACCESS_DENIED_MSG)
                 }
             });
@@ -90,7 +91,7 @@ public class PermissionVerifierTest {
     public String testName;
 
     @Parameterized.Parameter(1)
-    public UUID org;
+    public String org;
 
     @Parameterized.Parameter(2)
     public UserManagementClient umClient;
@@ -132,12 +133,12 @@ public class PermissionVerifierTest {
         return umClient;
     }
 
-    private static OrgPermission allOrgRoles(UUID guid) {
-        return new OrgPermission(new Org(guid, guid.toString()), true, true);
+    private static OrgPermission allOrgRoles(String id, String name) {
+        return new OrgPermission(new Org(id, name), true, true);
     }
 
-    private static OrgPermission noOrgRoles(UUID guid) {
-        return new OrgPermission(new Org(guid, guid.toString()), false, false);
+    private static OrgPermission noOrgRoles(String id, String name) {
+        return new OrgPermission(new Org(id, name), false, false);
     }
 
 }

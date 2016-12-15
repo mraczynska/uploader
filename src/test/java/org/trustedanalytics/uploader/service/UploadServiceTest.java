@@ -40,7 +40,6 @@ import org.trustedanalytics.uploader.core.listener.FileUploadListener;
 import org.trustedanalytics.uploader.core.stream.consumer.ObjectStoreStreamConsumer;
 import org.trustedanalytics.uploader.rest.UploadRequest;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -63,7 +62,7 @@ public class UploadServiceTest {
 
     private UploadService sut;
 
-    private UUID orgGuid = UUID.randomUUID();
+    private String orgId = UUID.randomUUID().toString();
 
     @Before
     public void before() throws Exception {
@@ -75,7 +74,7 @@ public class UploadServiceTest {
     public void testUploadFile() throws IOException, FileUploadException {
 
         // given
-        final UploadRequest request = new UploadRequest(UUID.randomUUID(), new FileUploadListener());
+        final UploadRequest request = new UploadRequest(UUID.randomUUID().toString(), new FileUploadListener());
 
         // when
         mockFileItemIterator("title");
@@ -84,7 +83,7 @@ public class UploadServiceTest {
         assertThat(sut.processUpload(fileItemIterator, request, false),  Matchers.hasItem(allOf(hasProperty("category", is("category")),
                                                                                                 hasProperty("title", is("title")),
                                                                                                 hasProperty("source", is("source")),
-                                                                                                hasProperty("orgUUID", is(orgGuid.toString())),
+                                                                                                hasProperty("orgId", is(orgId)),
                                                                                                 hasProperty("publicAccess", is(false)),
                                                                                                 hasProperty("objectStoreId", is("file://" + folder.getRoot().toString() + "/")))));
     }
@@ -93,7 +92,7 @@ public class UploadServiceTest {
     public void testUploadFiles() throws IOException, FileUploadException {
 
         // given
-        UploadRequest request = new UploadRequest(UUID.randomUUID(), new FileUploadListener());
+        UploadRequest request = new UploadRequest(UUID.randomUUID().toString(), new FileUploadListener());
 
         // when
         mockFileItemIterator("source");
@@ -102,7 +101,7 @@ public class UploadServiceTest {
         assertThat(sut.processUpload(fileItemIterator, request, true),  Matchers.hasItem(allOf(hasProperty("category", is("category")),
                                                                                                hasProperty("title", is("source")),
                                                                                                hasProperty("source", is("source")),
-                                                                                               hasProperty("orgUUID", is(orgGuid.toString())),
+                                                                                               hasProperty("orgId", is(orgId)),
                                                                                                hasProperty("publicAccess", is(false)),
                                                                                                hasProperty("objectStoreId", is("file://" + folder.getRoot().toString() + "/")))));
     }
@@ -110,7 +109,7 @@ public class UploadServiceTest {
     private void mockFileItemIterator(String title) throws IOException, FileUploadException {
 
         final FileItemStream categoryField = mockFileItemStream(true, "category", "category");
-        final FileItemStream orgUUIDField = mockFileItemStream(true, "orgUUID", orgGuid.toString());
+        final FileItemStream orgUUIDField = mockFileItemStream(true, "orgUUID", orgId);
         final FileItemStream titleField = mockFileItemStream(true, "title", title);
         final FileItemStream accessField = mockFileItemStream(true, "publicRequest", "false");
         final FileItemStream sourceField = mockFileItemStream(false, "source", "source");
