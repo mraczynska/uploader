@@ -19,7 +19,7 @@ import org.trustedanalytics.store.InFolderObjectStore;
 import org.trustedanalytics.store.ObjectStoreConfiguration;
 import org.trustedanalytics.uploader.client.DataAcquisitionClient;
 import org.trustedanalytics.uploader.core.stream.consumer.ObjectStoreStreamConsumer;
-import org.trustedanalytics.uploader.core.stream.consumer.TriConsumer;
+import org.trustedanalytics.uploader.core.stream.consumer.QuadConsumer;
 import org.trustedanalytics.uploader.rest.Transfer;
 import org.trustedanalytics.uploader.security.PermissionVerifier;
 
@@ -42,7 +42,7 @@ public class UploaderConfigurationLocal {
     private static final Logger LOGGER = LoggerFactory.getLogger(UploaderConfiguration.class);
 
     @Bean
-    public TriConsumer<InputStream, Transfer, String> streamConsumer(
+    public QuadConsumer<InputStream, Transfer, String, String> streamConsumer(
             InFolderObjectStore store) {
         return new ObjectStoreStreamConsumer(x -> store);
     }

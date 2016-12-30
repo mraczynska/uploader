@@ -18,7 +18,7 @@ package org.trustedanalytics.uploader.service;
 import static com.google.common.base.Preconditions.checkState;
 
 import org.trustedanalytics.uploader.client.DataAcquisitionClient;
-import org.trustedanalytics.uploader.core.stream.consumer.TriConsumer;
+import org.trustedanalytics.uploader.core.stream.consumer.QuadConsumer;
 import org.trustedanalytics.uploader.rest.Transfer;
 import org.trustedanalytics.uploader.rest.UploadException;
 import org.trustedanalytics.uploader.rest.UploadMetadata;
@@ -55,7 +55,7 @@ public class UploadService {
 
     private final Function<InputStream, InputStream> streamDecoder;
 
-    private final TriConsumer<InputStream, Transfer, String> streamConsumer;
+    private final QuadConsumer<InputStream, Transfer, String, String> streamConsumer;
 
     private DataAcquisitionClient dataAcquisitionClient;
 
@@ -63,7 +63,7 @@ public class UploadService {
 
     @Autowired
     public UploadService(Function<InputStream, InputStream> streamDecoder,
-                         TriConsumer<InputStream, Transfer, String> streamConsumer, DataAcquisitionClient client,
+                         QuadConsumer<InputStream, Transfer, String, String> streamConsumer, DataAcquisitionClient client,
                          Function<Authentication, String> tokenExtractor) {
         this.streamDecoder = streamDecoder;
         this.streamConsumer = streamConsumer;
@@ -99,7 +99,7 @@ public class UploadService {
         try (InputStream input = streamDecoder.apply(fileItemStream.openStream())) {
             final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Transfer transfer = new Transfer(uploadMetadata);
-            streamConsumer.accept(input, transfer, uploadMetadata.getOrgId());
+            streamConsumer.accept(input, transfer, uploadMetadata.getOrgId(), uploadMetadata.getTitle());
             transfer = mapper.apply(transfer);
             dataAcquisitionClient.uploadCompleted(transfer, "bearer " + tokenExtractor.apply(auth));
             transfers.add(transfer);

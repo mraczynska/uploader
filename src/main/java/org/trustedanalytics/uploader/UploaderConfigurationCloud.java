@@ -21,7 +21,7 @@ import org.trustedanalytics.uploader.client.DataAcquisitionClient;
 import org.trustedanalytics.uploader.client.ScramblingSlf4jLogger;
 import org.trustedanalytics.uploader.client.UserManagementClient;
 import org.trustedanalytics.uploader.core.stream.consumer.ObjectStoreStreamConsumer;
-import org.trustedanalytics.uploader.core.stream.consumer.TriConsumer;
+import org.trustedanalytics.uploader.core.stream.consumer.QuadConsumer;
 import org.trustedanalytics.uploader.rest.FeignErrorDecoder;
 import org.trustedanalytics.uploader.rest.Transfer;
 import org.trustedanalytics.uploader.security.OrgPermissionVerifier;
@@ -50,7 +50,7 @@ public class UploaderConfigurationCloud {
     private String userManagementUrl;
 
     @Bean
-    public TriConsumer<InputStream, Transfer, String> streamConsumer(
+    public QuadConsumer<InputStream, Transfer, String, String> streamConsumer(
             ObjectStoreFactory<String> store) {
         return new ObjectStoreStreamConsumer(store);
     }

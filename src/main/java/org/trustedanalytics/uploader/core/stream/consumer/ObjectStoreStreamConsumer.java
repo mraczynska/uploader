@@ -28,7 +28,7 @@ import java.util.Objects;
 import javax.security.auth.login.LoginException;
 
 
-public class ObjectStoreStreamConsumer implements TriConsumer<InputStream, Transfer, String> {
+public class ObjectStoreStreamConsumer implements QuadConsumer<InputStream, Transfer, String, String> {
 
     private final ObjectStoreFactory<String> objectStoreFactory;
 
@@ -37,12 +37,12 @@ public class ObjectStoreStreamConsumer implements TriConsumer<InputStream, Trans
     }
 
     @Override
-    public void accept(InputStream inputStream, Transfer transfer, String orgId)
+    public void accept(InputStream inputStream, Transfer transfer, String orgId, String dataSetName)
             throws IOException, LoginException, InterruptedException {
         ObjectStore objectStore = objectStoreFactory.create(orgId);
         try {
             transfer.setObjectStoreId(objectStore.getId());
-            transfer.setSavedObjectId(objectStore.save(inputStream));
+            transfer.setSavedObjectId(objectStore.save(inputStream, dataSetName));
         } catch (IOException ex) {
             Throwables.propagate(ex);
         }

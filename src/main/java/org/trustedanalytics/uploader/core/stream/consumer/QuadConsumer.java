@@ -19,7 +19,7 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 
 @FunctionalInterface
-public interface TriConsumer<T, U, V> {
+public interface QuadConsumer<T, U, V, E> {
 
-    void accept(T t, U u, V v) throws IOException, LoginException, InterruptedException;
+    void accept(T t, U u, V v, E e) throws IOException, LoginException, InterruptedException;
 }
